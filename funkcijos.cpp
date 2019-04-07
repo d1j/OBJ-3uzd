@@ -1,11 +1,5 @@
 #include "funkcijos.h"
-
-#include <iostream>
-#include <random>
-#include <fstream>
-
-using std::cin;
-using std::cout;
+#include "main.h"
 
 bool ar_failas_egzistuoja(std::string pav){
     std::ifstream in(pav);

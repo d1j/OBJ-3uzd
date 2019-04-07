@@ -1,13 +1,5 @@
 #include "mokinys.h"
-
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-#include <stdexcept>
-
-using std::cout;
-using std::endl;
-using std::setw;
+#include "main.h"
 
 void mokinys::isvestiInfo(std::ofstream& out, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit) {
 	if (vardPavKrit == 1) {
@@ -62,11 +54,11 @@ void mokinys::skaiciuotiMediana() {
 	//Nustatome mediana
 	if (sk % 2 == 1) {
 		//Nelyginis skaičius pažymiu
-		mediana = *std::next(pazym.begin(), (sk - 1) / 2);
+		mediana = pazym[sk / 2];
 	}
 	else {
 		//Lyginis skaičius pažymiu
-		mediana = 1.0 * (*std::next(pazym.begin(), sk / 2 - 1) + *std::next(pazym.begin(), sk / 2)) / 2;
+		mediana = 1.0 * (pazym[sk / 2 - 1] + pazym[sk / 2]) / 2;
 	}
 
 }

@@ -1,17 +1,7 @@
 #include "generavimas.h"
-
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <exception>
-#include <stdexcept>
-#include <chrono>
-
 #include "funkcijos.h"
+#include "main.h"
 
-using std::cout;
-using std::cin;
-using std::endl;
 using namespace std::chrono;
 
 void generuoti(std::string pavad, int mokSk) {
@@ -35,7 +25,7 @@ void generuoti(std::string pavad, int mokSk) {
 		out.close();
 		auto end = high_resolution_clock::now();
     	duration<double> diff = end-start;  
-		cout << "\nFailas sugeneruotas per: "<< diff.count()<< "s.\n";
+		cout << "\nFailas sugeneruotas per: "<< diff.count()<< "s.\n\n";
 	} catch (std::exception& e) {
 		cout << e.what() << endl;
 	}

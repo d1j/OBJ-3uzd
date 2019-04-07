@@ -1,9 +1,7 @@
-#include <iostream>
-#include <exception>
-
 #include "apdorojimas.h"
 #include "generavimas.h"
 #include "funkcijos.h"
+#include "main.h"
 
 int main() {
 	bool power = true;
