@@ -4,7 +4,7 @@
 
 using namespace std::chrono;
 
-void generuoti(std::string pavad, int mokSk) {
+void generuoti(string pavad, int mokSk) {
 	try {
 		auto start = high_resolution_clock::now();
 		int pazSk = 0;
@@ -42,7 +42,7 @@ void generuotiDuomenis() {
 	}
 	if (mokSk != -1) {
 		bool pavPower = true;
-		std::string pavad;
+		string pavad;
 		while (pavPower) {
 			cout << "Iveskite tinkama failo pavadinima (PVZ.: duomenys.txt arba input.in): ";
 			cin >> pavad;

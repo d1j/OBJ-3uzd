@@ -1,7 +1,7 @@
 #include "funkcijos.h"
 #include "main.h"
 
-bool ar_failas_egzistuoja(std::string pav){
+bool ar_failas_egzistuoja(string pav){
     std::ifstream in(pav);
     bool retVal = in.good();
     in.close();

@@ -7,11 +7,11 @@ int main() {
 	bool power = true;
 	int pasirink = -1;
 	while (power) {
-		std::cout << "\n--Mokiniu rezultatu skaiciavimo programa--" << std::endl
+		cout << "\n--Mokiniu rezultatu skaiciavimo programa--" << endl
 		          << "Pasirinkite ka norite daryti:\n1. Skaiciuoti mokiniu rezultatus\n2. Generuoti duomenis\n3. Iseiti\n: ";
 		pasirink = int_ivestis();
 		while (pasirink < 1 || pasirink > 3) {
-			std::cout << "Blogas pasirinkimas, iveskite pasirinkima is naujo: ";
+			cout << "Blogas pasirinkimas, iveskite pasirinkima is naujo: ";
 			pasirink = int_ivestis();
 		}
 		switch (pasirink) {
@@ -25,7 +25,7 @@ int main() {
 			power = false;
 			break;
 		default:
-			std::cout << "Nenumatyta klaida." << std::endl;
+			cout << "Nenumatyta klaida." << endl;
 			break;
 		}
 	}

@@ -4,61 +4,51 @@
 void mokinys::isvestiInfo(std::ofstream& out, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit) {
 	if (vardPavKrit == 1) {
 		//Rikiavimas pagal vardą, pirmas rodomas vardas
-		out << setw(maxVardIlgis + 2) << std::left << vardas << setw(maxPavardIlgis + 2) << pavarde;
+		out << setw(maxVardIlgis + 2) << std::left << vardas_ << setw(maxPavardIlgis + 2) << pavarde_;
 	} else if (vardPavKrit == 2) {
 		//RIkiavimas pagal pavardę, pirma rodoma pavardė
-		out << setw(maxPavardIlgis + 2)  << std::left << pavarde << setw(maxVardIlgis + 2) << vardas;
+		out << setw(maxPavardIlgis + 2)  << std::left << pavarde_ << setw(maxVardIlgis + 2) << vardas_;
 	} else {
 		//Nenumatyta klaida.
 		out << "Nenumatyta klaida.\n";
 	}
 
-	out << std::setprecision(2) << std::fixed << setw(18) << (0.4 * vidurkis) + (0.6 * egz)
-	    << std::setprecision(2) << std::fixed << setw(18) << (0.4 * mediana) + (0.6 * egz) << endl;
+	out << std::setprecision(2) << std::fixed << setw(18) << vid_
+	    << std::setprecision(2) << std::fixed << setw(18) << med_ << endl;
 }
 
-void mokinys::spausdintiInfo(int maxVardIlgis, int maxPavardIlgis, int pasirink) {
-	if (pasirink == 1) {
-		//Rikiavimas pagal vardą, pirmas rodomas vardas
-		cout << setw(maxVardIlgis + 2) << std::left << vardas << setw(maxPavardIlgis + 2) << pavarde;
-	} else if (pasirink == 2) {
-		//RIkiavimas pagal pavardę, pirma rodoma pavardė
-		cout << setw(maxPavardIlgis + 2)  << std::left << pavarde << setw(maxVardIlgis + 2) << vardas;
-	} else {
-		//Nenumatyta klaida.
-		cout << "Nenumatyta klaida.\n";
-	}
-
-	cout << std::setprecision(2) << std::fixed << setw(18) << (0.4 * vidurkis) + (0.6 * egz)
-	     << std::setprecision(2) << std::fixed << setw(18) << (0.4 * mediana) + (0.6 * egz) << endl;
+void mokinys::setEgzPopNd() {
+	egz_ = pazym_.back();
+	pazym_.pop_back();
 }
 
-void mokinys::skaiciuotiVidurki() {
-	int sk = pazym.size();
-	if (sk == 0) throw std::logic_error("Nera namu darbu pazymiu, apskaiciuoti vidurkio negalima. Mokinys: " + vardas + " " + pavarde);
+void mokinys::skaiciuotiGalVid() {
+	int sk = pazym_.size();
+	if (sk == 0) throw std::logic_error("Nera namu darbu pazymiu, apskaiciuoti vidurkio negalima. Mokinys: " + vardas_ + " " + pavarde_);
 	double suma = 0;
-	auto it = pazym.begin();
-	while (it != pazym.end()) {
+	auto it = pazym_.begin();
+	while (it != pazym_.end()) {
 		suma += *it;
 		it++;
 	}
-	vidurkis = 1.0 * suma / (double)sk;
-
+	double vidurkis = 1.0 * suma / (double)sk;
+	vid_ = (0.4 * vidurkis) + (0.6 * egz_);
 }
 
-void mokinys::skaiciuotiMediana() {
-	int sk = pazym.size();
-	if (sk == 0) throw std::logic_error("Nera namu darbu pazymiu, apskaiciuoti medianos negalima. Mokinys: " + vardas + " " + pavarde);
+void mokinys::skaiciuotiGalMed() {
+	int sk = pazym_.size();
+	if (sk == 0) throw std::logic_error("Nera namu darbu pazymiu, apskaiciuoti medianos negalima. Mokinys: " + vardas_ + " " + pavarde_);
 	//Prieš skaičiavimą išrikiuojame masyvo elementus didėjimo tvarka.
-	std::sort(pazym.begin(), pazym.end());
+	std::sort(pazym_.begin(), pazym_.end());
+	double mediana;
 	//Nustatome mediana
 	if (sk % 2 == 1) {
 		//Nelyginis skaičius pažymiu
-		mediana = pazym[sk / 2];
+		mediana = pazym_[sk / 2];
 	}
 	else {
 		//Lyginis skaičius pažymiu
-		mediana = 1.0 * (pazym[sk / 2 - 1] + pazym[sk / 2]) / 2;
+		mediana = 1.0 * (pazym_[sk / 2 - 1] + pazym_[sk / 2]) / 2;
 	}
-
+	med_ = (0.4 * mediana) + (0.6 * egz_);
 }

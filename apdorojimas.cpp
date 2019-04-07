@@ -9,7 +9,7 @@ using namespace std::chrono;
 //Funkcija atlieka v0.4 užduotį ir sudaro du mokinių sąrašus atskiruose failuose "./rezultatai" aplanke
 void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit) {
 	bool pavPower = true;
-	std::string pavad;
+	string pavad;
 	while (pavPower) {
 		cout << "Iveskite tinkama rezultatu failo pavadinima (failo formato vesti nereikia. Programa automatiskai sukuria .txt formato rezultatu failus): ";
 		cin >> pavad;
@@ -47,7 +47,7 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 	} else {
 		//Nenumatyta klaida
 		cout << "Nenumatyta klaida.\n";
-		cout << "Nenumatyta klaida.\n";
+		return;
 	}
 	kietOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
 	vargOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
@@ -83,32 +83,32 @@ void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPava
 		if (input.fail()) throw std::runtime_error("Nurodytas failas neatsidare!");
 
 		while (!input.eof()) {
-			mokinys esamas;
 			eilute++;
-			int pap;
-			input >> esamas.vardas
-			      >> esamas.pavarde;
-			if (esamas.vardas == "" || esamas.pavarde == "") continue;
-			if (esamas.vardas.size() > maxVardIlgis) maxVardIlgis = esamas.vardas.size();
-			if (esamas.pavarde.size() > maxPavardIlgis) maxPavardIlgis = esamas.pavarde.size();
+			int paz;
+			string vardas;
+			string pavarde;
+			input >> vardas >> pavarde;
+			if (vardas == "" || pavarde == "") continue;
+			mokinys esamas(vardas, pavarde);
+			if (vardas.size() > maxVardIlgis) maxVardIlgis = vardas.size();
+			if (pavarde.size() > maxPavardIlgis) maxPavardIlgis = pavarde.size();
 			while (input.peek() != '\n' && !input.eof()) {
-				input >> pap;
+				input >> paz;
 				if (input.fail()) {
 					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
 				}
-				if (pap < 1  || pap > 10) {
+				if (paz < 1  || paz > 10) {
 					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
 				}
-				esamas.pazym.push_back(pap);
+				esamas.pushPazym(paz);
 			}
-			if (esamas.pazym.size() < 2) {
+			if (esamas.ndSk() < 2) {
 				throw std::logic_error("Mokinys turi tik viena pazymi, negalima nustatyti ar tai namu darbo pazymys ar egzamino pazymys. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
 			}
-			esamas.egz = esamas.pazym.back();
-			esamas.pazym.pop_back();
+			esamas.setEgzPopNd();
 			try {
-				esamas.skaiciuotiVidurki();
-				esamas.skaiciuotiMediana();
+				esamas.skaiciuotiGalVid();
+				esamas.skaiciuotiGalMed();
 			} catch (std::exception& e) {
 				cout << "Nepavyko apskaiciuoti mokinio vidurkio/medianos: " << e.what() << endl;
 			}
@@ -126,15 +126,17 @@ void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPava
 }
 
 bool arIslaikeVid(mokinys &a) {
-	if ((a.vidurkis * 0.4 + a.egz * 0.6) < 5.0 && !arDoubleLygus(a.vidurkis * 0.4 + a.egz * 0.6, 5.0)) {
+	if (a.galBalasVid() < 5.0 && !arDoubleLygus(a.galBalasVid(), 5.0)) {
 		return false;
 	} return true;
 }
+
 bool arIslaikMed(mokinys &a) {
-	if ((a.mediana * 0.4 + a.egz * 0.6) < 5.0 && !arDoubleLygus(a.mediana * 0.4 + a.egz * 0.6, 5.0)) {
+	if (a.galBalasMed() < 5.0 && !arDoubleLygus(a.galBalasMed(), 5.0)) {
 		return false;
 	} return true;
 }
+
 vector<mokinys> atskirtiVarg(vector<mokinys> &mokiniai, int kriterijus) {
 	auto start = high_resolution_clock::now();
 	vector<mokinys>::iterator it;
@@ -157,11 +159,11 @@ vector<mokinys> atskirtiVarg(vector<mokinys> &mokiniai, int kriterijus) {
 
 //Pagalbinė funkcija, nustatanti mokinio pirmenybę sąraše tarp dviejų mokinių pagal Vardą
 bool rikVard(mokinys& i, mokinys& j) {
-	if (i.vardas < j.vardas) {
+	if (i.vardas() < j.vardas()) {
 		return true;
 	}
-	else if (i.vardas == j.vardas) {
-		if (i.pavarde < j.pavarde)
+	else if (i.vardas() == j.vardas()) {
+		if (i.pavarde() < j.pavarde())
 			return true;
 		else
 			return false;
@@ -171,19 +173,17 @@ bool rikVard(mokinys& i, mokinys& j) {
 }
 //Pagalbinė funkcija, nustatanti mokinio pirmenybę sąraše tarp dviejų mokinių pagal pavardę
 bool rikPavard(mokinys& i, mokinys& j) {
-	if (i.pavarde < j.pavarde) {
+	if (i.pavarde() < j.pavarde()) {
 		return true;
 	}
-	else if (i.pavarde == j.pavarde) {
-		if (i.vardas < j.vardas)
+	else if (i.pavarde() == j.pavarde()) {
+		if (i.vardas() < j.vardas())
 			return true;
 		else
 			return false;
 	} else {
 		return false;
 	}
-
-	return (i.pavarde < j.pavarde);
 }
 //Mokinių rikiavimo funkcija
 void rikiuotiMokinius(vector<mokinys> &mokiniai, int pasirinkimas) {

@@ -22,5 +22,4 @@ using std::endl;
 using std::setw;
 using std::vector;
 
-
 #endif
