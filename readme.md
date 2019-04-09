@@ -274,3 +274,13 @@ Išvados (iš pirmos duomenų lentelės):
 Išvados (iš antros duomenų lentelės):
 * Panaudoti `std::remove_if` bei `std::stable_partition` algortimai išgelbėjo programą su `std::vector` konteineriu ir parodė vienus geriausių rezultatų.
 * Matyti, jog skaidymas naudojant `std::stable_partition` trunka x1.7 karto ilgiau. Spėju, jog taip yra dėl to, kad `std::stable_partition` tvarkingai surūšiuoja elementus į dvi kategorijas (rūšiavimo metu vyksta elementų "swap'ai", kurių metu kuriama elemento kopija, ir dėl to programos veikimo laikas kenčia), o `std::remove_if` tiesiog sustumia į konteinerio priekį elementus, tenkinančius nurodytą kriterijų (vietoj trijų prilyginimo operacijų ("swap'inant" elementus) tokiu atvėju tereikia vienos prilyginimo operacijos).
+
+---
+# v1.1
+---
+| Konteinerio tipas | Failo skaitymas | Rikiavimas | Skaidymas | Išvedimas (į failus) |
+| ----------------- | --------------- | ---------- | --------- | -------------------- |
+| v1.1  10 000      | 0.155872s       | 0.109112s  | 0.015353s | 0.155988s            |
+| v1.0  10 000      | 0.140669s       | 0.062239s  | 0.015656s | 0.155142s            |
+| v1.1  100 000     | 1.24994s        | 1.22825s   | 0.140392s | 1.15618s             |
+| v1.0  100 000     | 1.20321s        | 0.609582s  | 0.140357s | 1.16144s             |
