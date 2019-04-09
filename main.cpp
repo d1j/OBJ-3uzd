@@ -5,7 +5,7 @@
 
 int main() {
 	bool power = true;
-	int pasirink = -1;
+	int pasirink;
 	while (power) {
 		cout << "\n--Mokiniu rezultatu skaiciavimo programa--" << endl
 		          << "Pasirinkite ka norite daryti:\n1. Skaiciuoti mokiniu rezultatus\n2. Generuoti duomenis\n3. Iseiti\n: ";

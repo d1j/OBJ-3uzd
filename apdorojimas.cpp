@@ -74,46 +74,22 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 //Duomenų skaitymo iš failo funkcija
 void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPavardIlgis) {
 	string pavadinimas;
-	int eilute = 0;
-	cout << "Iveskite failo pavadinima (PVZ failas.txt): "; cin >> pavadinimas;
+	cout << "Iveskite failo pavadinima (PVZ failas.txt): ";
+	cin >> pavadinimas;
 	try {
 		auto start = high_resolution_clock::now();
 		if (!ar_failas_egzistuoja("./duomenys/" + pavadinimas)) throw std::runtime_error("Nurodytas failas neegzistuoja!");
 		std::ifstream input("./duomenys/" + pavadinimas);
 		if (input.fail()) throw std::runtime_error("Nurodytas failas neatsidare!");
 
-		while (!input.eof()) {
-			eilute++;
-			int paz;
-			string vardas;
-			string pavarde;
-			input >> vardas >> pavarde;
-			if (vardas == "" || pavarde == "") continue;
-			mokinys esamas(vardas, pavarde);
-			if (vardas.size() > maxVardIlgis) maxVardIlgis = vardas.size();
-			if (pavarde.size() > maxPavardIlgis) maxPavardIlgis = pavarde.size();
-			while (input.peek() != '\n' && !input.eof()) {
-				input >> paz;
-				if (input.fail()) {
-					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
-				}
-				if (paz < 1  || paz > 10) {
-					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
-				}
-				esamas.pushPazym(paz);
-			}
-			if (esamas.ndSk() < 2) {
-				throw std::logic_error("Mokinys turi tik viena pazymi, negalima nustatyti ar tai namu darbo pazymys ar egzamino pazymys. Klaida " + std::to_string(eilute) + "-oje eiluteje.");
-			}
-			esamas.setEgzPopNd();
-			try {
-				esamas.skaiciuotiGalVid();
-				esamas.skaiciuotiGalMed();
-			} catch (std::exception& e) {
-				cout << "Nepavyko apskaiciuoti mokinio vidurkio/medianos: " << e.what() << endl;
-			}
-			mokiniai.push_back(esamas);
+		bool power = true;
+		while (power) {
+			mokiniai.emplace_back(input, maxVardIlgis, maxPavardIlgis, power);
 		}
+		mokiniai.pop_back();
+		mokiniai.shrink_to_fit();
+		cout << mokiniai.size();
+
 		input.close();
 		auto end = high_resolution_clock::now();
 		duration<double> diff = end - start;
@@ -217,7 +193,7 @@ void skaiciuotiRezultatus() {
 		skaitytiMokinius(mokiniai, maxVardIlgis, maxPavardIlgis);
 
 		cout << "Pagal ka norite rikiuoti mokinius?\n1. Varda\n2. Pavarde\n";
-		int vardPavKrit = int_ivestis(); //Vardo/Pavardės kriterijus. Galimi variantai : 1-2
+		int vardPavKrit = int_ivestis();//Vardo/Pavardės kriterijus. Galimi variantai : 1-2
 		while (vardPavKrit != 1 && vardPavKrit != 2) {
 			cout << "\nNetinkamas pasirinkimas. Galimi pasirinkimai:\n1. Varda\n2. Pavarde\nJusu pasirinkimas: ";
 			vardPavKrit = int_ivestis();
