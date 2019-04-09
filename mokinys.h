@@ -12,8 +12,8 @@ private:
 	double vid_;
 	double med_;
 public:
-	mokinys() { vardas_ = ""; pavarde_ = ""; egz_ = 0; vid_=0; med_=0; }
-	mokinys(string vardas, string pavarde) { vardas_ = vardas; pavarde_ = pavarde; egz_ = 0; vid_=0; med_=0; }
+	mokinys() : vardas_(""), pavarde_(""), egz_(0), vid_(0), med_(0) { }
+	mokinys(string vardas, string pavarde) : vardas_(vardas), pavarde_(pavarde), egz_(0), vid_(0), med_(0) { }
 
 	//setters
 	void setVardas(string vardas) { vardas_ = vardas; }

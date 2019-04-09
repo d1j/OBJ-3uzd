@@ -1,7 +1,7 @@
 #ifndef FUNKCIJOS_H
 #define FUNKCIJOS_H
 
-#include <main.h>
+#include "main.h"
 
 int int_ivestis();
 
