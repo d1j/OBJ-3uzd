@@ -278,6 +278,16 @@ Išvados (iš antros duomenų lentelės):
 ---
 # v1.1
 ---
+## **_Naudojimosi instrukcijos_**
+
+Kompiliuoti naudojant `make` arba "ranka" 
+`g++ -o main main.cpp funkcijos.cpp apdorojimas.cpp generavimas.cpp mokinys.cpp`
+
+## **_Pastebėjimai_**
+
+Kodas buvo perdarytas taip, kad dabartinė mokinio duomenų struktūra saugo galutinį balą pagal medianą ir pagal vidurkį. Galutiniai balai apskaičiuojami failo skaitymo metu. Tai, ko gero, yra priežastis, kodėl failo skaitymas nesutrumpėjo. 
+
+## **_Analizė_**
 
 |                   | Failo skaitymas | Rikiavimas | Skaidymas | Išvedimas (į failus) |
 | ----------------- | --------------- | ---------- | --------- | -------------------- |
