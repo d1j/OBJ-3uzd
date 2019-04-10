@@ -88,7 +88,6 @@ void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPava
 		}
 		mokiniai.pop_back();
 		mokiniai.shrink_to_fit();
-		cout << mokiniai.size();
 
 		input.close();
 		auto end = high_resolution_clock::now();
@@ -208,7 +207,7 @@ void skaiciuotiRezultatus() {
 		}
 		vector<mokinys> vargs = atskirtiVarg(mokiniai, rezKrit);
 		isvestiMokinius(vargs, mokiniai, maxVardIlgis, maxPavardIlgis, vardPavKrit);
-
+		
 	} catch (std::exception& e) {
 		//Kodėl šitas catch blokas tuščias, galbūt paaiškės paskaičius komentarus "skaitytiMokinius" funkcijoje
 	}
