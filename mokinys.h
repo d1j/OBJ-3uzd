@@ -15,6 +15,8 @@ public:
 	mokinys() : vardas_(""), pavarde_(""), egz_(0) { }
 	mokinys(string vardas, string pavarde) : vardas_(vardas), pavarde_(pavarde), egz_(0) { }
 	mokinys(std::ifstream &input, int& maxVardIlgis, int& maxPavardIlgis, bool& power);
+	mokinys(mokinys&& a);
+	mokinys(const mokinys& a);
 
 	//setters
 	void setVardas(string vardas) { vardas_ = vardas; }
@@ -33,10 +35,11 @@ public:
 	//overloaded operators v1.2
 	bool operator==(const mokinys&);
 	bool operator!=(const mokinys&);
+	mokinys& operator=(mokinys&& m);
 
-	friend std::ostream& operator<<(std::ostream& out, const mokinys& m); 
+	friend std::ostream& operator<<(std::ostream& out, const mokinys& m);
 	friend std::istream& operator>>(std::istream& in, mokinys& m);
-	
+
 	void isvestiInfo(std::ofstream& out, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit);
 };
 

@@ -109,6 +109,7 @@ std::ostream& operator<<(std::ostream& out, const mokinys& m) {
 	return out;
 }
 
+//v1.2
 std::istream& operator>>(std::istream& in, mokinys& m) {
 	int paz;
 	in >> m.vardas_ >> m.pavarde_;
@@ -129,4 +130,46 @@ std::istream& operator>>(std::istream& in, mokinys& m) {
 		m.setEgzPopNd();
 	}
 	return in;
+}
+
+//v1.2
+mokinys::mokinys(const mokinys& a) :
+	vardas_{a.vardas_},
+	pavarde_{a.pavarde_},
+	pazym_{a.pazym_},
+	med_{a.med_},
+	vid_{a.vid_}
+{
+	std::copy(a.pazym_.begin(), a.pazym_.end(), std::back_inserter(pazym_));
+}
+
+//v1.2
+mokinys::mokinys(mokinys&& a) :
+	vardas_{a.vardas_},
+	pavarde_{a.pavarde_},
+	egz_{a.egz_},
+	med_{a.med_},
+	vid_{a.vid_},
+	pazym_{std::move(a.pazym_)}
+{
+}
+
+mokinys& mokinys::operator=(mokinys&& m){
+	if(&m == this){
+		return *this;
+	}
+	vardas_ = m.vardas_;
+	pavarde_ = m.pavarde_;
+	pazym_ = m.pazym_;
+	egz_ = m.egz_;
+	vid_ = m.vid_;
+	med_ = m.med_;
+
+	m.vardas_ = "";
+	m.pavarde_ = "";
+	m.pazym_.clear();
+	m.egz_ = 0;
+	m.vid_ = 0;
+	m.med_ = 0;
+	return *this;
 }
