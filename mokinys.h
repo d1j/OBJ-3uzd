@@ -30,6 +30,13 @@ public:
 	void skaiciuotiGalVid();
 	void skaiciuotiGalMed();
 
+	//overloaded operators v1.2
+	bool operator==(const mokinys&);
+	bool operator!=(const mokinys&);
+
+	friend std::ostream& operator<<(std::ostream& out, const mokinys& m); 
+	friend std::istream& operator>>(std::istream& in, mokinys& m);
+	
 	void isvestiInfo(std::ofstream& out, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit);
 };
 

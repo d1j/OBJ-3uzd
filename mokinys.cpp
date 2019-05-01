@@ -42,8 +42,8 @@ void mokinys::isvestiInfo(std::ofstream& out, int maxVardIlgis, int maxPavardIlg
 		out << "Nenumatyta klaida.\n";
 	}
 
-	out << std::setprecision(2) << std::fixed << setw(18) << galBalasVid()
-	    << std::setprecision(2) << std::fixed << setw(18) << galBalasMed() << endl;
+	out << std::setprecision(2) << std::fixed << setw(18) << vid_
+	    << std::setprecision(2) << std::fixed << setw(18) << med_ << endl;
 
 }
 
@@ -91,4 +91,47 @@ void mokinys::skaiciuotiGalMed() {
 		cout << "Nepavyko apskaiciuoti mokinio vidurkio: " << e.what() << endl;
 		throw;
 	}
+}
+
+//v1.2
+bool mokinys::operator==(const mokinys& a) {
+	return vardas_ == a.vardas_ && pavarde_ == a.pavarde_;
+}
+
+//v1.2
+bool mokinys::operator!=(const mokinys& a) {
+	return !(vardas_ == a.vardas_ && pavarde_ == a.pavarde_);
+}
+
+//v1.2
+std::ostream& operator<<(std::ostream& out, const mokinys& m) {
+	out << m.vardas_ << "  " << m.pavarde_ << "  " << m.vid_ << "  " << m.med_ << endl;
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, mokinys& m) {
+	if (!in.eof()) {
+		int paz;
+		char *vard, *pav;
+		in >> vard >> pav;
+		m.vardas_ = vard;
+		m.pavarde_ = pav;
+		if (m.vardas_ != "" || m.pavarde_ != "") {
+			while (in.peek() != '\n' && !in.eof()) {
+				in >> paz;
+				if (in.fail()) {
+					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis.");
+				}
+				if (paz < 1  || paz > 10) {
+					throw std::runtime_error("Nepavyko nuskaityti duomenu, patikrinkite, ar gerai ivedete duomenis.");
+				}
+				m.pazym_.push_back(paz);
+			}
+			if (m.pazym_.size() < 2) {
+				throw std::logic_error("Mokinys turi tik viena pazymi, negalima nustatyti ar tai namu darbo pazymys ar egzamino pazymys.");
+			}
+			m.setEgzPopNd();
+		}
+	} 
+	return in;
 }
