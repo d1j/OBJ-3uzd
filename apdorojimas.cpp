@@ -39,11 +39,11 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 	std::ofstream kietOut("./rezultatai/" + pavad + "_kiet.txt"),
 	    vargOut("./rezultatai/" + pavad + "_varg.txt");
 	if (vardPavKrit == 1) {
-		kietOut << std::left << setw(maxVardIlgis + 2) << "Vardas" << setw(maxPavardIlgis + 2) << "Pavarde";
-		vargOut << std::left << setw(maxVardIlgis + 2) << "Vardas" << setw(maxPavardIlgis + 2) << "Pavarde";
+		kietOut << "Vardas         Pavarde               ";
+		vargOut << "Vardas         Pavarde               ";
 	} else if (vardPavKrit == 2) {
-		kietOut << std::left << setw(maxPavardIlgis + 2) << "Pavarde" << setw(maxVardIlgis + 2) << "Vardas";
-		vargOut << std::left << setw(maxPavardIlgis + 2) << "Pavarde" << setw(maxVardIlgis + 2) << "Vardas";
+		kietOut << "Vardas         Pavarde               ";
+		vargOut << "Vardas         Pavarde               ";
 	} else {
 		//Nenumatyta klaida
 		cout << "Nenumatyta klaida.\n";
@@ -51,17 +51,14 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 	}
 	kietOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
 	vargOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
-	string linija(maxVardIlgis + maxPavardIlgis + 4, '-');
-	kietOut << linija << "----------------------------------\n";
-	vargOut << linija << "----------------------------------\n";
 	auto it = varg.begin();
 	while (it != varg.end()) {
-		it->isvestiInfo(vargOut, maxVardIlgis, maxPavardIlgis, vardPavKrit);
+		vargOut << *it;
 		it++;
 	}
 	it = kiet.begin();
 	while (it != kiet.end()) {
-		it->isvestiInfo(kietOut, maxVardIlgis, maxPavardIlgis, vardPavKrit);
+		kietOut << *it;
 		it++;
 	}
 	kietOut.close();
@@ -83,8 +80,12 @@ void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPava
 		if (input.fail()) throw std::runtime_error("Nurodytas failas neatsidare!");
 
 		bool power = true;
-		while (power) {
-			mokiniai.emplace_back(input, maxVardIlgis, maxPavardIlgis, power);
+		while (!input.eof()) {
+			mokinys esamas;
+			input >> esamas;
+			esamas.skaiciuotiGalVid();
+			esamas.skaiciuotiGalMed();
+			mokiniai.push_back(esamas);
 		}
 		mokiniai.pop_back();
 		mokiniai.shrink_to_fit();
@@ -207,7 +208,7 @@ void skaiciuotiRezultatus() {
 		}
 		vector<mokinys> vargs = atskirtiVarg(mokiniai, rezKrit);
 		isvestiMokinius(vargs, mokiniai, maxVardIlgis, maxPavardIlgis, vardPavKrit);
-		
+
 	} catch (std::exception& e) {
 		//Kodėl šitas catch blokas tuščias, galbūt paaiškės paskaičius komentarus "skaitytiMokinius" funkcijoje
 	}
