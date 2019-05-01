@@ -134,8 +134,7 @@ std::istream& operator>>(std::istream& in, mokinys& m) {
 
 //v1.2
 mokinys::mokinys(const mokinys& a) :
-	vardas_{a.vardas_},
-	pavarde_{a.pavarde_},
+	zmogus{a.vardas_,a.pavarde_},
 	pazym_{a.pazym_},
 	med_{a.med_},
 	vid_{a.vid_}
@@ -145,8 +144,7 @@ mokinys::mokinys(const mokinys& a) :
 
 //v1.2
 mokinys::mokinys(mokinys&& a) :
-	vardas_{a.vardas_},
-	pavarde_{a.pavarde_},
+	zmogus{a.vardas_,a.pavarde_},
 	egz_{a.egz_},
 	med_{a.med_},
 	vid_{a.vid_},
@@ -154,6 +152,7 @@ mokinys::mokinys(mokinys&& a) :
 {
 }
 
+//v1.2
 mokinys& mokinys::operator=(mokinys&& m){
 	if(&m == this){
 		return *this;
@@ -165,8 +164,8 @@ mokinys& mokinys::operator=(mokinys&& m){
 	vid_ = m.vid_;
 	med_ = m.med_;
 
-	m.vardas_ = "";
-	m.pavarde_ = "";
+	m.setVardas("");
+	m.setPavarde("");
 	m.pazym_.clear();
 	m.egz_ = 0;
 	m.vid_ = 0;

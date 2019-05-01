@@ -2,35 +2,33 @@
 #define MOKINYS_H
 
 #include "main.h"
+#include "zmogus.h"
 
-class mokinys {
+class mokinys : public zmogus {
 private:
-	string vardas_;
-	string pavarde_;
 	vector<int> pazym_;
 	double egz_;
 	double vid_;
 	double med_;
 public:
-	mokinys() : vardas_(""), pavarde_(""), egz_(0) { }
-	mokinys(string vardas, string pavarde) : vardas_(vardas), pavarde_(pavarde), egz_(0) { }
+	mokinys() : zmogus{}, egz_{0} { }
+	mokinys(string vardas, string pavarde) : zmogus{vardas, pavarde}, egz_{0} { }
 	mokinys(std::ifstream &input, int& maxVardIlgis, int& maxPavardIlgis, bool& power);
 	mokinys(mokinys&& a);
 	mokinys(const mokinys& a);
 
 	//setters
-	void setVardas(string vardas) { vardas_ = vardas; }
-	void setPavarde(string pavarde) { pavarde_ = pavarde; }
 	void setEgzPopNd();
 	void pushPazym(int pazym) { pazym_.push_back(pazym); }
 
 	//getters
-	string vardas() const { return vardas_; }
-	string pavarde() const { return pavarde_; }
 	double galBalasVid() { return vid_; }
 	double galBalasMed() { return med_; }
 	void skaiciuotiGalVid();
 	void skaiciuotiGalMed();
+
+	//v1.5
+	void a() {/*yes*/}
 
 	//overloaded operators v1.2
 	bool operator==(const mokinys&);
