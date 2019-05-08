@@ -51,16 +51,15 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 	}
 	kietOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
 	vargOut << "Galutinis (Vid.)  Galutinis (Med.)\n";
-	auto it = varg.begin();
-	while (it != varg.end()) {
-		vargOut << *it;
-		it++;
+
+	for (auto i = 0; i < varg.size(); i++) {
+		vargOut << varg[i];
 	}
-	it = kiet.begin();
-	while (it != kiet.end()) {
-		kietOut << *it;
-		it++;
+
+	for(auto i=0;i<kiet.size();i++){
+		kietOut << kiet[i];
 	}
+
 	kietOut.close();
 	vargOut.close();
 	auto end = high_resolution_clock::now();
