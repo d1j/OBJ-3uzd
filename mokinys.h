@@ -6,7 +6,7 @@
 
 class mokinys : public zmogus {
 private:
-	vector<int> pazym_;
+	Vector<int> pazym_;
 	double egz_;
 	double vid_;
 	double med_;
@@ -34,6 +34,7 @@ public:
 	bool operator==(const mokinys&);
 	bool operator!=(const mokinys&);
 	mokinys& operator=(mokinys&& m);
+	mokinys& operator=(const mokinys& m);
 
 	friend std::ostream& operator<<(std::ostream& out, const mokinys& m);
 	friend std::istream& operator>>(std::istream& in, mokinys& m);

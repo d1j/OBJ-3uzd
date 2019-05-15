@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 
+#include "Vector.h"
 
 using std::string;
 using std::cout;

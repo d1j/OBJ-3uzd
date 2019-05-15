@@ -39,3 +39,33 @@ bool arDoubleLygus(double dFirstVal, double dSecondVal)
 {
 	return std::fabs(dFirstVal - dSecondVal) < 1E-2;
 }
+
+void quickSortVid(Vector<mokinys> &mas, int kaire, int desine) {
+	double vidur = mas[(kaire + desine) / 2].galBalasVid(); //vidurinis intervalo elementas jei 
+	int k = kaire, d = desine;
+	while (k <= d) {
+		while (mas[k].galBalasVid() < vidur) k++;
+		while (mas[d].galBalasVid() > vidur) d--;
+		if (k <= d) {
+			std::swap(mas[k], mas[d]);
+			k++; d--;
+		}
+	}
+	if (kaire < d) quickSortVid(mas, kaire, d);
+	if (k < desine) quickSortVid(mas, k, desine);
+}
+
+void quickSortMed(Vector<mokinys> &mas, int kaire, int desine) {
+	double vidur = mas[(kaire + desine) / 2].galBalasMed(); //vidurinis intervalo elementas jei 
+	int k = kaire, d = desine;
+	while (k <= d) {
+		while (mas[k].galBalasMed() < vidur) k++;
+		while (mas[d].galBalasMed() > vidur) d--;
+		if (k <= d) {
+			std::swap(mas[k], mas[d]);
+			k++; d--;
+		}
+	}
+	if (kaire < d) quickSortMed(mas, kaire, d);
+	if (k < desine) quickSortMed(mas, k, desine);
+}

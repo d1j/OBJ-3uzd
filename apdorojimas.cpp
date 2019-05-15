@@ -7,7 +7,7 @@ using namespace std::chrono;
 
 
 //Funkcija atlieka v0.4 užduotį ir sudaro du mokinių sąrašus atskiruose failuose "./rezultatai" aplanke
-void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit) {
+void isvestiMokinius(Vector<mokinys> &varg, Vector<mokinys> &kiet, int maxVardIlgis, int maxPavardIlgis, int vardPavKrit) {
 	bool pavPower = true;
 	string pavad;
 	while (pavPower) {
@@ -56,7 +56,7 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 		vargOut << varg[i];
 	}
 
-	for(auto i=0;i<kiet.size();i++){
+	for (auto i = 0; i < kiet.size(); i++) {
 		kietOut << kiet[i];
 	}
 
@@ -68,7 +68,7 @@ void isvestiMokinius(vector<mokinys> &varg, vector<mokinys> &kiet, int maxVardIl
 }
 
 //Duomenų skaitymo iš failo funkcija
-void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPavardIlgis) {
+void skaitytiMokinius(Vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPavardIlgis) {
 	string pavadinimas;
 	cout << "Iveskite failo pavadinima (PVZ failas.txt): ";
 	cin >> pavadinimas;
@@ -86,7 +86,6 @@ void skaitytiMokinius(vector<mokinys> &mokiniai, int &maxVardIlgis, int &maxPava
 			esamas.skaiciuotiGalMed();
 			mokiniai.push_back(esamas);
 		}
-		mokiniai.pop_back();
 		mokiniai.shrink_to_fit();
 
 		input.close();
@@ -112,24 +111,41 @@ bool arIslaikMed(mokinys &a) {
 	} return true;
 }
 
-vector<mokinys> atskirtiVarg(vector<mokinys> &mokiniai, int kriterijus) {
+Vector<mokinys> atskirtiKiet(Vector<mokinys> &mokiniai, int kriterijus) {
 	auto start = high_resolution_clock::now();
-	vector<mokinys>::iterator it;
 
+	////////////////////////////cia gali neveikt
+	Vector<mokinys> kiet;
+	int iter = 0;
 	if (kriterijus == 1 ) {
-		it = std::stable_partition(mokiniai.begin(), mokiniai.end(), arIslaikeVid);
-	} else if (kriterijus == 2) {
-		it = std::stable_partition(mokiniai.begin(), mokiniai.end(), arIslaikMed);
-	}
+		quickSortVid(mokiniai, 0, mokiniai.size() - 1);
 
-	vector<mokinys> varg(it, mokiniai.end());
-	mokiniai.erase(it, mokiniai.end());
+		for (auto i = 0; i < mokiniai.size(); ++i) {
+			if (arDoubleLygus(mokiniai[i].galBalasVid(), 5.0) || mokiniai[i].galBalasVid() > 5.0) {
+				iter = i;
+				break;
+			}
+		}
+	} else if (kriterijus == 2) {
+		quickSortMed(mokiniai, 0, mokiniai.size() - 1);
+		for (auto i = 0; i < mokiniai.size(); ++i) {
+			if (arDoubleLygus(mokiniai[i].galBalasMed(), 5.0) || mokiniai[i].galBalasMed() > 5.0) {
+				iter = i;
+				break;
+			}
+		}
+	}
+	for (auto i = iter; i < mokiniai.size(); ++i) {
+		kiet.push_back(mokiniai[i]);
+	}
+	mokiniai.resize(iter);
 	mokiniai.shrink_to_fit();
+	////////////////////////////
 
 	auto end = high_resolution_clock::now();
 	duration<double> diff = end - start;
 	cout << "\nVargsai atskirti nuo kietu per: " << diff.count() << "s.\n\n";
-	return varg;
+	return kiet;
 }
 
 //Pagalbinė funkcija, nustatanti mokinio pirmenybę sąraše tarp dviejų mokinių pagal Vardą
@@ -161,8 +177,7 @@ bool rikPavard(mokinys& i, mokinys& j) {
 	}
 }
 //Mokinių rikiavimo funkcija
-void rikiuotiMokinius(vector<mokinys> &mokiniai, int pasirinkimas) {
-	auto start = high_resolution_clock::now();
+void rikiuotiMokinius(Vector<mokinys> &mokiniai, int pasirinkimas) {
 	if (pasirinkimas == 1) {
 		//Rikiavimas pagal vardą
 		std::sort(mokiniai.begin(), mokiniai.end(), rikVard);
@@ -175,16 +190,12 @@ void rikiuotiMokinius(vector<mokinys> &mokiniai, int pasirinkimas) {
 		//Klaida
 		cout << "Ivyko nenumatyta klaida...";
 	}
-
-	auto end = high_resolution_clock::now();
-	duration<double> diff = end - start;
-	cout << "\nKonteineris surikiuotas per: " << diff.count() << "s.\n\n";
 }
 
 //Pagrindinė apdorojimo funkcija
 void skaiciuotiRezultatus() {
 	try {
-		vector<mokinys> mokiniai;
+		Vector<mokinys> mokiniai;
 		int maxVardIlgis = 6, maxPavardIlgis = 7; //"vardas" - 6 simboliai//"pavarde" - 7 simboliai
 
 		cout << "REZULTATU SKAICIAVIMAS\n";
@@ -197,7 +208,6 @@ void skaiciuotiRezultatus() {
 			cout << "\nNetinkamas pasirinkimas. Galimi pasirinkimai:\n1. Varda\n2. Pavarde\nJusu pasirinkimas: ";
 			vardPavKrit = int_ivestis();
 		}
-		rikiuotiMokinius(mokiniai, vardPavKrit);
 
 		cout << "Pagal kokius rezultatus norite rusiuoti mokinius?\n1. Vidurki\n2. Mediana\n: ";
 		int rezKrit = int_ivestis();
@@ -205,8 +215,17 @@ void skaiciuotiRezultatus() {
 			cout << "Negalima reiksme. Iveskite reiksme is naujo: ";
 			rezKrit = int_ivestis();
 		}
-		vector<mokinys> vargs = atskirtiVarg(mokiniai, rezKrit);
-		isvestiMokinius(vargs, mokiniai, maxVardIlgis, maxPavardIlgis, vardPavKrit);
+
+		////////////////////////cia gali but blogai
+		Vector<mokinys> kiet = atskirtiKiet(mokiniai, rezKrit);
+		auto start = high_resolution_clock::now();
+		rikiuotiMokinius(kiet, vardPavKrit);
+		rikiuotiMokinius(mokiniai, vardPavKrit);
+		auto end = high_resolution_clock::now();
+		duration<double> diff = end - start;
+		cout << "\nKonteineris surikiuotas per: " << diff.count() << "s.\n\n";
+		isvestiMokinius(mokiniai, kiet, maxVardIlgis, maxPavardIlgis, vardPavKrit);
+		//////////////////////////
 
 	} catch (std::exception& e) {
 		//Kodėl šitas catch blokas tuščias, galbūt paaiškės paskaičius komentarus "skaitytiMokinius" funkcijoje

@@ -105,7 +105,7 @@ bool mokinys::operator!=(const mokinys& a) {
 
 //v1.2
 std::ostream& operator<<(std::ostream& out, const mokinys& m) {
-	out << m.vardas_ << "  " << m.pavarde_ << "        " << m.vid_ << "        " << m.med_ << endl;
+	out << m.vardas_ << "  " << m.pavarde_ << "        " << std::fixed << std::setprecision(2) << m.vid_ << "        " << m.med_ << endl;
 	return out;
 }
 
@@ -134,17 +134,19 @@ std::istream& operator>>(std::istream& in, mokinys& m) {
 
 //v1.2
 mokinys::mokinys(const mokinys& a) :
-	zmogus{a.vardas_,a.pavarde_},
+	zmogus{a.vardas_, a.pavarde_},
 	pazym_{a.pazym_},
 	med_{a.med_},
 	vid_{a.vid_}
 {
-	std::copy(a.pazym_.begin(), a.pazym_.end(), std::back_inserter(pazym_));
+	for (auto i = 0; i < a.pazym_.size(); ++i) {
+		pazym_.push_back(a.pazym_[i]);
+	}
 }
 
 //v1.2
 mokinys::mokinys(mokinys&& a) :
-	zmogus{a.vardas_,a.pavarde_},
+	zmogus{a.vardas_, a.pavarde_},
 	egz_{a.egz_},
 	med_{a.med_},
 	vid_{a.vid_},
@@ -153,8 +155,8 @@ mokinys::mokinys(mokinys&& a) :
 }
 
 //v1.2
-mokinys& mokinys::operator=(mokinys&& m){
-	if(&m == this){
+mokinys& mokinys::operator=(mokinys&& m) {
+	if (&m == this) {
 		return *this;
 	}
 	vardas_ = m.vardas_;
@@ -170,5 +172,19 @@ mokinys& mokinys::operator=(mokinys&& m){
 	m.egz_ = 0;
 	m.vid_ = 0;
 	m.med_ = 0;
+	return *this;
+}
+
+mokinys& mokinys::operator=(const mokinys& m) {
+	if (&m == this) {
+		return *this;
+	}
+	vardas_ = m.vardas_;
+	pavarde_ = m.pavarde_;
+	pazym_ = m.pazym_;
+	egz_ = m.egz_;
+	vid_ = m.vid_;
+	med_ = m.med_;
+
 	return *this;
 }
