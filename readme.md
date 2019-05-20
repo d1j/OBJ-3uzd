@@ -34,4 +34,14 @@ Kompiliuoti naudojant `make` arba "ranka"
 
 ## **_Realizuoti operatoriai_**
 
-* 
+* << Išveda resultatus į failą
+* .>> Įveda duomenis iš failo į objektą
+* == Patikrina ar dviejų mokinių vardas ir pavardė sutampa
+* != Patikrina ar dviejų mokinių vardas ir pavardė nesutampa
+* = Priskirai r-value arba l-value reikšmę
+
+# v1.5
+---
+
+Bazinė klasė - zmogus.h
+Derived klasė - mokinys.h
