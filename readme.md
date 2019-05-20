@@ -1,3 +1,5 @@
+# Pastebėjimas: visas kodas "main" branch'e
+
 
 # v1.1
 ---
@@ -45,3 +47,6 @@ Kompiliuoti naudojant `make` arba "ranka"
 
 Bazinė klasė - zmogus.h
 Derived klasė - mokinys.h
+
+# v2.0
+---
