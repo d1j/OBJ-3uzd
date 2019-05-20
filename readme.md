@@ -50,3 +50,5 @@ Derived klasė - mokinys.h
 
 # v2.0
 ---
+
+DoxyGen dokumantecija "doxy dok" foldery main brnach'e.
